@@ -1,0 +1,90 @@
+html { 
+    height: 100% 
+}
+
+body { 
+    height: 100%; 
+    margin: 0px; 
+    padding: 0px 
+}
+
+.container{
+    margin-top: 30px;
+}
+
+#gMap {
+    margin-top: 20px;
+    height:350px; /* Important sinon la carte n'apparait pas ! */
+    margin-bottom: 50px;
+}
+
+.selector {
+    display: inline-block;
+}
+
+#map_canvas { 
+    width: 100%; 
+    height: 100% 
+}
+
+#markerList {
+    margin-top: 20px;
+    margin-left: 10px;
+    max-height: 350px;
+    overflow-y: scroll;
+}
+
+.searchBar {
+    max-height: 50px;
+}
+
+#markerList li {
+    cursor: pointer;
+}
+
+#search {
+    margin-bottom: 30px;
+}
+
+li img {
+    display: inline-block;
+}
+
+p {
+    margin-bottom: 0px;
+}
+
+.formRestaurant {
+    margin-bottom: 20px;
+}
+
+.commentList {
+    margin-bottom: 30px;
+    position: relative;
+    display: block;
+    padding: .75rem 1.25rem;
+    background-color: #fff;
+    border: 1px solid rgba(0,0,0,.125);
+    
+}
+
+.gm-style .gm-style-iw-c {
+	max-width: 360px;
+    max-height: 200px;
+    max-height: 250px;
+}
+
+.navbar span {
+    color: #fff;
+}
+
+main {
+    margin-top: 60px;
+}
+
+footer {
+    position: fixed;
+    height: 4rem;
+    bottom: 0;
+    width: 100%;
+}

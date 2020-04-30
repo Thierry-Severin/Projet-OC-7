@@ -1,0 +1,130 @@
+[
+    {
+       "restaurantName":"Bronco",
+       "address":"39 Rue des Petites Écuries, 75010 Paris",
+       "lat":48.8737815,
+       "long":2.3501649,
+       "ratings":[
+          {
+             "stars":4,
+             "comment":"Un excellent restaurant, j'y reviendrai ! Par contre il vaut mieux aimer la viande."
+          },
+          {
+             "stars":5,
+             "comment":"Tout simplement mon restaurant préféré !"
+          }
+       ]
+    },
+    {
+       "restaurantName":"Babalou",
+       "address":"4 Rue Lamarck, 75018 Paris",
+       "lat":48.8865035,
+       "long":2.3442197,
+       "ratings":[
+          {
+             "stars":2,
+             "comment":"Une minuscule pizzeria délicieuse cachée juste à côté du Sacré choeur !"
+          },
+          {
+             "stars":3,
+             "comment":"J'ai trouvé ça correct, sans plus"
+          }
+       ]
+    },
+    {
+       "restaurantName":"Les Arlots",
+       "address":"136 Rue du Faubourg 75010 Paris",
+       "lat":48.880552,
+       "long":2.350141,
+       "ratings":[
+          {
+             "stars":5,
+             "comment":"Une expérience unique! Des plats exceptionnels. Une équipe géniale!"
+          },
+          {
+             "stars":4,
+             "comment":"L'ardoise est peu fourni mais juste comme il faut pour proposer des plats de bonne qualité."
+          }
+       ]
+    },
+    {
+       "restaurantName":"Le Bistrot des Dames",
+       "address":"18 Rue des Dames, 75017 Paris",
+       "lat":48.884964,
+       "long":2.324882,
+       "ratings":[
+          {
+             "stars":4,
+             "comment":"J’ai seulement testé la terrasse un soir d’été et le cadre est vraiment sympathique."
+          },
+          {
+             "stars":4,
+             "comment":"Joli cadre mais vite saturé en terrasse."
+          }
+       ]
+    },
+    {
+       "restaurantName":"L' Artiste",
+       "address":"153 Rue de la Roquette, 75011 Paris",
+       "lat":48.859494,
+       "long":2.386533,
+       "ratings":[
+          {
+             "stars":5,
+             "comment":"Mieux que ce que j'attendais. Brunch buffet à volonté, jus d'orange naturel, boissons chaudes  à volonté."
+          },
+          {
+             "stars":4,
+             "comment":"Petite brasserie sympa. C'est copieux et bon ! Tables un peu trop étroites, c'est souvent le cas à Paris."
+          }
+       ]
+    },
+    {
+       "restaurantName":"Le Val Royal",
+       "address":"93 Boulevard de Port-Royal, 75013 Paris",
+       "lat":48.838042,
+       "long":2.342236,
+       "ratings":[
+          {
+             "stars":5,
+             "comment":"Nous avons passé un moment unique au Val Royal, plats très savoureux, personnel exceptionnel: sympathique, disponible, très ouvert et flexible."
+          },
+          {
+             "stars":5,
+             "comment":"Bon accueil même tard. Hamburger très bon."
+          }
+       ]
+    },
+    {
+       "restaurantName":"L'Epopée",
+       "address":"89 Avenue Emile Zola, 75015 Paris",
+       "lat":48.846744,
+       "long":2.288018,
+       "ratings":[
+          {
+             "stars":5,
+             "comment":"Cuisine maison et de bonne qualité, bonne viande, beau poisson, copieux. bon conseil pour le vin. Bons fromages."
+          },
+          {
+             "stars":3,
+             "comment":"Pas mal sans plus. Pour le prix je m'attendais à beaucoup mieux."
+          }
+       ]
+    },
+    {
+      "restaurantName":"Sofresh",
+      "address":"17 Quai de Versailles, 44000 Nantes",
+      "lat":47.223098,
+      "long":-1.553510,
+      "ratings":[
+         {
+            "stars":5,
+            "comment":"Les burgers sont vraiment super bon. Peut-être un poil petit mais leurs goûts suffit très largement à rattraper leurs tailles."
+         },
+         {
+            "stars":4,
+            "comment":"Les burgers sont vraiment super bon. Peut-être un poil petit mais leurs goûts suffit très largement à rattraper leurs tailles."
+         }
+      ]
+    }
+]
