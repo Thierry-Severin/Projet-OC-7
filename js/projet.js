@@ -3,16 +3,17 @@ $('.addNewRestaurantForm').hide();
 
 // Au chargement de la page : choix de la géolocalisation ou non par l'utilisateur
 window.onload = function(){
-    Gmap = initMap();
+    position = new google.maps.LatLng(lat, lon);
+    gMap = initMap ? initMap(position) : null;
 
-    if (navigator.geolocation) {
+    if (navigator.geolocation && gMap) {
         navigator.geolocation.getCurrentPosition(function(position) {
             lat = position.coords.latitude;
             lon = position.coords.longitude;
-            Gmap.setCenter(new google.maps.LatLng(lat, lon));
+            gMap.setCenter(new google.maps.LatLng(lat, lon));
             const marker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
-                map: Gmap,
+                map: gMap,
                 title: 'Votre position',
                 icon: 'img/icon.png'
             });
@@ -22,16 +23,16 @@ window.onload = function(){
                 content: contentString
             });
             marker.addListener('click', function() {
-                infowindow.open(Gmap, marker);
+                infowindow.open(gMap, marker);
             });
             infoWindowList.push(infowindow);
             getRestaurantList();
         }, function() {
             alert('La position par défaut à été définie sur Paris.');
-            Gmap.setCenter(new google.maps.LatLng(lat, lon));
+            gMap.setCenter(new google.maps.LatLng(lat, lon));
             const marker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
-                map: Gmap,
+                map: gMap,
                 title: 'Votre position',
                 icon: 'img/icon.png'
             });
@@ -41,7 +42,7 @@ window.onload = function(){
                 content: contentString
             });
             marker.addListener('click', function() {
-                infowindow.open(Gmap, marker);
+                infowindow.open(gMap, marker);
             });
             infoWindowList.push(infowindow);
             getRestaurantList();
@@ -49,6 +50,8 @@ window.onload = function(){
     } else {
         alert('La Géolocalisation n\'est pas disponible sur votre Navigateur.');
     }
+    
+    getRestaurantsWhenDragend();
 
     // Chargement du bouton pour l'ajout d'un commentaire
     $('#addCommentBtn').click(function() {
@@ -58,6 +61,9 @@ window.onload = function(){
 
 // Recherche d'un restaurant via la navbar
 $('#searchRestaurant').click(function() {
+    getRestaurantsWhenDragend();
+    // Contenu de commentList caché
+    removeRestaurantDetails();
     const restaurantSearched = document.getElementById('searchBar').value;
     
     if (restaurantSearched) {
@@ -67,11 +73,10 @@ $('#searchRestaurant').click(function() {
             fields: ['name', 'geometry', 'formatted_address', 'rating', 'place_id'],
         };
         
-        const service = new google.maps.places.PlacesService(Gmap);
+        const service = new google.maps.places.PlacesService(gMap);
         
         service.findPlaceFromQuery(request, function(results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-                console.log('searchRestaurant result:', results);
 
                 const resultSearchedByName = results;
                 if (resultSearchedByName === undefined) {
@@ -89,7 +94,7 @@ $('#searchRestaurant').click(function() {
                     );
                     const marker = new google.maps.Marker({
                         position: restaurant.geometry.location,
-                        map: Gmap
+                        map: gMap
                     });
                     markerList.push(marker);
                 
@@ -100,7 +105,7 @@ $('#searchRestaurant').click(function() {
                     });
     
                     marker.addListener('click', function() {
-                        infowindow.open(Gmap, marker);
+                        infowindow.open(gMap, marker);
                     });
                     
                     infoWindowList.push(infowindow);
@@ -109,7 +114,7 @@ $('#searchRestaurant').click(function() {
                 });
     
                 createRestaurantList();
-                Gmap.setCenter(results[0].geometry.location);
+                gMap.setCenter(results[0].geometry.location);
             }
         });
     } else {
@@ -120,8 +125,11 @@ $('#searchRestaurant').click(function() {
 
 // Recherche des restaurant via filtre de leur moyenne
 $('#search').click(function() {
+    getRestaurantsWhenDragend();
     // reinitialisation de la map
-    Gmap = initMap();
+    gMap = initMap(position);
+    // Contenu de commentList caché
+    removeRestaurantDetails();
     // reinitialisation de restaurantListDom pour vider la liste
     let restaurantListDom = '';
     // retire les infowindow présents dans infoWindowList[]
@@ -152,7 +160,7 @@ $('#search').click(function() {
         resultSearchByRate.forEach(function(restaurant){
             const marker = new google.maps.Marker({
                 position: new google.maps.LatLng(restaurant.getRestaurantLat(), restaurant.getRestaurantLong()),
-                map: Gmap,
+                map: gMap,
                 title: restaurant.getRestaurantName(),
             });
             markerList.push(marker);
@@ -165,7 +173,7 @@ $('#search').click(function() {
             infoWindowList.push(infowindow);
 
             marker.addListener('click', function() {
-                infowindow.open(Gmap, marker);
+                infowindow.open(gMap, marker);
             });
         });
     }
