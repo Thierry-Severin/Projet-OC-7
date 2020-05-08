@@ -64,64 +64,8 @@ $('#searchRestaurantByName').click(function() {
     getRestaurantWhenDragend();
     // Contenu de commentList caché
     removeRestaurantDetails();
-
-    const restaurantSearched = document.getElementById('searchBar').value;
-    
-    if (restaurantSearched) {
-        // Récupération des informations sur GooglePlaces
-        const request = {
-            query: restaurantSearched,
-            fields: ['name', 'geometry', 'formatted_address', 'rating', 'place_id'],
-            locationBias: gMap.getCenter()
-        };
-        
-        const service = new google.maps.places.PlacesService(gMap);
-        
-        service.findPlaceFromQuery(request, function(results, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                const resultSearchedByName = results;
-                if (resultSearchedByName === undefined) {
-                    alert('Votre recherche ne retourne aucuns restaurants, désolé.');
-                }
-                resultSearchedByName.forEach(function(restaurant) {
-                    const newRestaurant = new Restaurant(
-                        restaurant.name,
-                        restaurant.formatted_address,
-                        restaurant.geometry.location.lat,
-                        restaurant.geometry.location.lng,
-                        restaurant.rating,
-                        restaurant.place_id
-                    );
-                    const marker = new google.maps.Marker({
-                        position: restaurant.geometry.location,
-                        map: gMap
-                    });
-                    markerList.push(marker);
-                
-                    const contentString = `<h5>${restaurant.name}</h5>${restaurant.formatted_address}`;
-                
-                    const infowindow = new google.maps.InfoWindow({
-                        content: contentString
-                    });
-    
-                    marker.addListener('click', function() {
-                        infowindow.open(gMap, marker);
-                    });
-                    
-                    infoWindowList.push(infowindow);
-                    infowindow.open(gMap, marker);
-    
-                    restaurantList.unshift(newRestaurant);
-                });
-    
-                createRestaurantList();
-                gMap.setCenter(results[0].geometry.location);
-            }
-        });
-    } else {
-        alert('Veuillez saisir un restaurant à rechercher.');
-    }
-    document.getElementById('searchBar').value = '';
+    // Requete pour récupérer le restaurant via le son nom grâce à la barre de recherche
+    getRestaurantByName();
 });
 
 // Recherche des restaurant via filtre de leur moyenne

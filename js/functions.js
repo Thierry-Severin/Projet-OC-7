@@ -22,6 +22,7 @@ function initMap(position) {
             style: google.maps.NavigationControlStyle.ZOOM_PAN 
         }
     });
+    // gMap = new Map(newMap);
 }
 
 // Création de la liste des restaurants
@@ -72,7 +73,7 @@ function markerClose(markerList) {
 
 // Récupère lat et lng sur la map et créé un marker avec ces coordonnées
 function markerAtClick() {
-    google.maps.event.addListener(gMap, 'click', function(event) {
+    google.maps.event.addListener(gMap, 'rightclick', function(event) {
         markerClose(markerList);
         geoCoder.geocode({'location': event.latLng}, function(results, status) {
             if (status === 'OK') {
@@ -101,8 +102,8 @@ function markerAtClick() {
                         });
                     });
 
-                    infowindow.open(gMap, marker);
                     infoWindowList.push(infowindow);
+                    infowindow.open(gMap, marker);
                 } else {
                     alert('Aucun résultat trouvé.');
                 }
@@ -391,6 +392,66 @@ function getRestaurantList() {
     //         createRestaurantList();
     //         markerAtClick();
     //     });
+}
+
+function getRestaurantByName() {
+    const restaurantSearched = document.getElementById('searchBar').value;
+    
+    if (restaurantSearched) {
+        // Récupération des informations sur GooglePlaces
+        const request = {
+            query: restaurantSearched,
+            fields: ['name', 'geometry', 'formatted_address', 'rating', 'place_id'],
+            locationBias: gMap.getCenter()
+        };
+        
+        const service = new google.maps.places.PlacesService(gMap);
+        
+        service.findPlaceFromQuery(request, function(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                const resultSearchedByName = results;
+                if (resultSearchedByName === undefined) {
+                    alert('Votre recherche ne retourne aucuns restaurants, désolé.');
+                }
+                resultSearchedByName.forEach(function(restaurant) {
+                    const newRestaurant = new Restaurant(
+                        restaurant.name,
+                        restaurant.formatted_address,
+                        restaurant.geometry.location.lat,
+                        restaurant.geometry.location.lng,
+                        restaurant.rating,
+                        restaurant.place_id
+                    );
+                    const marker = new google.maps.Marker({
+                        position: restaurant.geometry.location,
+                        map: gMap
+                    });
+                    markerList.push(marker);
+                
+                    const contentString = `<h5>${restaurant.name}</h5>${restaurant.formatted_address}`;
+                
+                    const infowindow = new google.maps.InfoWindow({
+                        content: contentString
+                    });
+    
+                    marker.addListener('click', function() {
+                        infowindow.open(gMap, marker);
+                    });
+                    
+                    infoWindowList.push(infowindow);
+                    infowindow.open(gMap, marker);
+    
+                    restaurantList.unshift(newRestaurant);
+                });
+    
+                createRestaurantList();
+                gMap.setCenter(results[0].geometry.location);
+            }
+        });
+    } else {
+        alert('Veuillez saisir un restaurant à rechercher.');
+    }
+    document.getElementById('searchBar').value = '';
 }
 
 function getRestaurantWhenDragend() {
