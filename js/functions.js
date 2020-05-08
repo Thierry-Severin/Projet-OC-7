@@ -330,68 +330,68 @@ function initRestaurantDetails(restaurant) {
 // Reupération des restaurants et de leurs informations via le service GoogleMap & GooglePlaces || en local
 function getRestaurantList() {
     // Récupération des informations sur GooglePlaces
-    const request = {
-        location: gMap.getCenter(),
-        radius: '500',
-        type: ['restaurant']
-    };
+    // const request = {
+    //     location: gMap.getCenter(),
+    //     radius: '500',
+    //     type: ['restaurant']
+    // };
     
-    const service = new google.maps.places.PlacesService(gMap);
-    service.nearbySearch(request, callback);
+    // const service = new google.maps.places.PlacesService(gMap);
+    // service.nearbySearch(request, callback);
     
-    function callback(results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            results.forEach(function (restaurant) {
-
-                const newRestaurant = new Restaurant(
-                    restaurant.name, 
-                    restaurant.vicinity, 
-                    restaurant.geometry.location.lat(), 
-                    restaurant.geometry.location.lng(), 
-                    restaurant.rating, 
-                    restaurant.place_id,
-                    []
-                );
-                restaurantList.push(newRestaurant);
-            });
-
-            createRestaurantList();
-            markerAtClick();
-        }
-    }
-
-    // En local via JSON
-    // fetch('js/data.json')
-    //     .then(response => response.json())
-    //     .then(function(results) {
+    // function callback(results, status) {
+    //     if (status === google.maps.places.PlacesServiceStatus.OK) {
     //         results.forEach(function (restaurant) {
-    //             const reviews = restaurant.ratings.map((rating) => new CustomReview(
-    //                 undefined,
-    //                 rating.stars,
-    //                 rating.comment
-    //             ));
-
-    //             let rating = 0;
-    //             reviews.forEach((review) => rating += review.rate);
-    //             rating /= reviews.length;
 
     //             const newRestaurant = new Restaurant(
-    //                 restaurant.restaurantName, 
-    //                 restaurant.address, 
-    //                 restaurant.lat, 
-    //                 restaurant.long,
-    //                 rating.toFixed(1),
-    //                 undefined,
-    //                 reviews
+    //                 restaurant.name, 
+    //                 restaurant.vicinity, 
+    //                 restaurant.geometry.location.lat(), 
+    //                 restaurant.geometry.location.lng(), 
+    //                 restaurant.rating, 
+    //                 restaurant.place_id,
+    //                 []
     //             );
-    //             newRestaurant.reviews.forEach((review) => review.restaurantId = newRestaurant.id);
     //             restaurantList.push(newRestaurant);
     //         });
-        
-    //         restaurantList.flatMap((restaurant) => restaurant.reviews).forEach((review) => customReviews.push(review));
+
     //         createRestaurantList();
     //         markerAtClick();
-    //     });
+    //     }
+    // }
+
+    // En local via JSON
+    fetch('js/data.json')
+        .then(response => response.json())
+        .then(function(results) {
+            results.forEach(function (restaurant) {
+                const reviews = restaurant.ratings.map((rating) => new CustomReview(
+                    undefined,
+                    rating.stars,
+                    rating.comment
+                ));
+
+                let rating = 0;
+                reviews.forEach((review) => rating += review.rate);
+                rating /= reviews.length;
+
+                const newRestaurant = new Restaurant(
+                    restaurant.restaurantName, 
+                    restaurant.address, 
+                    restaurant.lat, 
+                    restaurant.long,
+                    rating.toFixed(1),
+                    undefined,
+                    reviews
+                );
+                newRestaurant.reviews.forEach((review) => review.restaurantId = newRestaurant.id);
+                restaurantList.push(newRestaurant);
+            });
+        
+            restaurantList.flatMap((restaurant) => restaurant.reviews).forEach((review) => customReviews.push(review));
+            createRestaurantList();
+            markerAtClick();
+        });
 }
 
 function getRestaurantByName() {
