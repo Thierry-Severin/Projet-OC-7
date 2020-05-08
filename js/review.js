@@ -5,4 +5,13 @@ class Review {
         this.rate = rate;
         this.comment = comment;
     }
+    getAuthor() {
+        return this.author;
+    }
+    getRate() {
+        return this.rate;
+    }
+    getComment() {
+        return this.comment;
+    }
 }

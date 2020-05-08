@@ -6,7 +6,7 @@ let lon = 2.3522219;
 // position contient les coordonnées lat & lng pour initMap
 let position;
 // Array créé pour stocker les {Restaurant} créés d'après resultList
-const restaurantList = [];
+let restaurantList = [];
 // Ajout de chaque infowindow dans cet array
 const infoWindowList = [];
 // Ajout de chaque marker dans cet array

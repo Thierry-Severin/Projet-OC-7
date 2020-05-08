@@ -35,6 +35,13 @@ function createRestaurantDom(restaurant) {
             </li>`;
 }
 
+// Ajout d'un message dans la liste si aucuns restaurant n'est trouvé
+function emptyRestaurantList() {
+    return `<li id='noRestaurantFound' class='list-group-item liElement'>
+                <h5>Aucuns Restaurant n\'à été trouvé.</h5>
+            </li>`;
+}
+
 // Obtenir l'image GoogleStreetView
 function getStreetViewImage(restaurant) {
     const IMG_WIDTH = 350;
@@ -125,11 +132,11 @@ function createNewRestaurant() {
             'N/A',
             'N/A'
         );
-        const noReviews = [{
-            author: 'N/A',
-            rate: 'N/A',
-            comment: 'N/A'
-        }];
+        const noReviews = new Review(
+            'N/A',
+            'N/A',
+            'N/A'
+        );
         newRestaurant.setReviews(noReviews);
         restaurantList.unshift(newRestaurant);
         createRestaurantList();
@@ -158,11 +165,11 @@ function getRestaurantReviews(restaurantMatched) {
         return 'Aucun commentaire disponible.';
     } else {
         return restaurantMatched.reviews.map(function(review) {
-            return `<h6><i><u>${review.author}</u></i></h6>
-            <u>Note :</u> ${review.rate} 
+            return `<h6><i><u>${review.getAuthor()}</u></i></h6>
+            <u>Note :</u> ${review.getRate()} 
             <i class='fas fa-star'></i>
             <br>
-            <u>Avis :</u> ${review.comment}`;
+            <u>Avis :</u> ${review.getComment()}`;
         }).join('<br><br>');
     }
 }
@@ -229,7 +236,7 @@ function refreshRateAverage(restaurantMatched) {
     let rateSum = 0;
     let rateAvg = 0;
     restaurantMatched.reviews.forEach(function(review) {
-        rateSum += review.rate;
+        rateSum += review.getRate();
         rateAvg = rateSum / restaurantMatched.reviews.length;
     });
     return rateAvg.toFixed(1);
@@ -260,6 +267,7 @@ function initMarkerForRestaurant(restaurant) {
         content: contentString
     });
     infoWindowList.push(infowindow);
+    infowindow.open(gMap, marker);
 
     marker.addListener('click', function() {
         infowindow.open(gMap, marker);
@@ -268,7 +276,7 @@ function initMarkerForRestaurant(restaurant) {
 
 // Récupère les reviews créés sur le site pour le restaurant correspondant
 function getCustomReviewsByRestaurantId(id) {
-    return customReviews.filter((review) => review.restaurantId === id);
+    return customReviews.filter((review) => review.getRestaurantId() === id);
 }
 
 // Récupère les reviews grâce à GooglePlaces
@@ -286,13 +294,17 @@ function getGooglePlacesReviews(restaurant) {
             // Si un restaurant n'a pas de reviews, alors place.reviews === undefined
             if (place.reviews) {
                 googlePlacesReviews = place.reviews.map(function(review) {
-                    return new Review(review.author_name, review.rating, review.text);
+                    return new Review(
+                        review.author_name, 
+                        review.rating, 
+                        review.text
+                    );
                 });
             }
 
-            const customReviewsOfRestaurant = getCustomReviewsByRestaurantId(restaurant.id);
+            const restaurantCustomReviews = getCustomReviewsByRestaurantId(restaurant.id);
 
-            const restaurantReviews = googlePlacesReviews.concat(customReviewsOfRestaurant);
+            const restaurantReviews = googlePlacesReviews.concat(restaurantCustomReviews);
             restaurant.setReviews(restaurantReviews);
             
             refreshRestaurantDetailsView(restaurant);
@@ -305,8 +317,8 @@ function getGooglePlacesReviews(restaurant) {
 // Affiche les détails d'un restaurant
 function initRestaurantDetails(restaurant) {
     if (!restaurant.getPlace_id() || restaurant.getPlace_id() === 'N/A') {
-        const customReviewsOfRestaurant = getCustomReviewsByRestaurantId(restaurant.id);
-        restaurant.setReviews(customReviewsOfRestaurant);
+        const restaurantCustomReviews = getCustomReviewsByRestaurantId(restaurant.id);
+        restaurant.setReviews(restaurantCustomReviews);
             
         refreshRestaurantDetailsView(restaurant);
     } else {
@@ -381,13 +393,12 @@ function getRestaurantList() {
     //     });
 }
 
-function getRestaurantsWhenDragend() {
+function getRestaurantWhenDragend() {
     // A chaque event 'dragend' on prend la position et on ajoute les restaurants alentours
     gMap.addListener('dragend', function(){
         position = gMap.getCenter();
-        console.log('position', position);
         getRestaurantNearby(position);
-        console.log('restaurantList', restaurantList);
+        removeRestaurantDetails();
     });
 }
 
@@ -396,7 +407,7 @@ function getRestaurantNearby() {
     // Récupération des informations sur GooglePlaces
     const request = {
         location: position,
-        radius: '500',
+        radius: '1000',
         type: ['restaurant']
     };
     
@@ -404,9 +415,9 @@ function getRestaurantNearby() {
     service.nearbySearch(request, callback);
     
     function callback(results, status) {
+        restaurantList = [];
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             results.forEach(function (restaurant) {
-
                 const newRestaurant = new Restaurant(
                     restaurant.name, 
                     restaurant.vicinity, 
@@ -418,9 +429,11 @@ function getRestaurantNearby() {
                 );
                 restaurantList.push(newRestaurant);
             });
-
             createRestaurantList();
             markerAtClick();
+        } else {
+            document.getElementById('markerList').innerHTML = emptyRestaurantList();
+            alert('Aucuns restaurants n\'à été trouvé dans cette zone.');
         }
     }
 }

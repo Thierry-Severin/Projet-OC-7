@@ -51,7 +51,7 @@ window.onload = function(){
         alert('La Géolocalisation n\'est pas disponible sur votre Navigateur.');
     }
     
-    getRestaurantsWhenDragend();
+    getRestaurantWhenDragend();
 
     // Chargement du bouton pour l'ajout d'un commentaire
     $('#addCommentBtn').click(function() {
@@ -60,10 +60,11 @@ window.onload = function(){
 };
 
 // Recherche d'un restaurant via la navbar
-$('#searchRestaurant').click(function() {
-    getRestaurantsWhenDragend();
+$('#searchRestaurantByName').click(function() {
+    getRestaurantWhenDragend();
     // Contenu de commentList caché
     removeRestaurantDetails();
+
     const restaurantSearched = document.getElementById('searchBar').value;
     
     if (restaurantSearched) {
@@ -71,18 +72,17 @@ $('#searchRestaurant').click(function() {
         const request = {
             query: restaurantSearched,
             fields: ['name', 'geometry', 'formatted_address', 'rating', 'place_id'],
+            locationBias: gMap.getCenter()
         };
         
         const service = new google.maps.places.PlacesService(gMap);
         
         service.findPlaceFromQuery(request, function(results, status) {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
-
                 const resultSearchedByName = results;
                 if (resultSearchedByName === undefined) {
                     alert('Votre recherche ne retourne aucuns restaurants, désolé.');
                 }
-    
                 resultSearchedByName.forEach(function(restaurant) {
                     const newRestaurant = new Restaurant(
                         restaurant.name,
@@ -109,6 +109,7 @@ $('#searchRestaurant').click(function() {
                     });
                     
                     infoWindowList.push(infowindow);
+                    infowindow.open(gMap, marker);
     
                     restaurantList.unshift(newRestaurant);
                 });
@@ -125,7 +126,6 @@ $('#searchRestaurant').click(function() {
 
 // Recherche des restaurant via filtre de leur moyenne
 $('#search').click(function() {
-    getRestaurantsWhenDragend();
     // reinitialisation de la map
     gMap = initMap(position);
     // Contenu de commentList caché
@@ -177,15 +177,19 @@ $('#search').click(function() {
             });
         });
     }
+    getRestaurantWhenDragend();
 });
 
 // Lors du clic sur un restaurant de la liste - affichage de plus d'informations
 $('#markerList').on('click','li.liElement', function() {
     const idLiElement = this.getAttribute('id');
-    const restaurantMatched = getRestaurantById(idLiElement);
-    selectedRestaurant = restaurantMatched;
-
-    initMarkerForRestaurant(restaurantMatched);
-
-    initRestaurantDetails(restaurantMatched);
+    if (idLiElement !== 'noRestaurantFound') {
+        const restaurantMatched = getRestaurantById(idLiElement);
+        selectedRestaurant = restaurantMatched;
+    
+        initMarkerForRestaurant(restaurantMatched);
+    
+        initRestaurantDetails(restaurantMatched);
+    }
+    getRestaurantWhenDragend();
 });

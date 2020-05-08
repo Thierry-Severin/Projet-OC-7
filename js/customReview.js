@@ -4,4 +4,7 @@ class CustomReview extends Review {
         super(author, rate, comment);
         this.restaurantId = restaurantId;
     }
+    getRestaurantId() {
+        return this.restaurantId;
+    }
 }
