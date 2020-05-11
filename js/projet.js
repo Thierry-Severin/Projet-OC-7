@@ -2,49 +2,23 @@
 $('.addNewRestaurantForm').hide();
 
 // Au chargement de la page : choix de la géolocalisation ou non par l'utilisateur
-window.onload = function(){
-    position = new google.maps.LatLng(lat, lon);
-    gMap = initMap ? initMap() : null;
+window.onload = function() {
+    map = new Map(lat, lon);
 
-    if (navigator.geolocation && gMap) {
+    // position = new google.maps.LatLng(lat, lon);
+    // gMap = initMap ? initMap() : null;
+
+    if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             lat = position.coords.latitude;
             lon = position.coords.longitude;
-            gMap.setCenter(new google.maps.LatLng(lat, lon));
-            const marker = new google.maps.Marker({
-                position: new google.maps.LatLng(lat, lon),
-                map: gMap,
-                title: 'Votre position',
-                icon: 'img/icon.png'
-            });
-            markerList.push(marker);
-            const contentString = '<h5>Vous êtes ici</h5>';
-            const infowindow = new google.maps.InfoWindow({
-                content: contentString
-            });
-            marker.addListener('click', function() {
-                infowindow.open(gMap, marker);
-            });
-            infoWindowList.push(infowindow);
+            map.center(lat, lon);
+            map.setUserMarker(lat, lon);
             getRestaurantList();
         }, function() {
             alert('La position par défaut à été définie sur Paris.');
-            gMap.setCenter(new google.maps.LatLng(lat, lon));
-            const marker = new google.maps.Marker({
-                position: new google.maps.LatLng(lat, lon),
-                map: gMap,
-                title: 'Votre position',
-                icon: 'img/icon.png'
-            });
-            markerList.push(marker);
-            const contentString = '<h5>Vous êtes ici</h5>';
-            const infowindow = new google.maps.InfoWindow({
-                content: contentString
-            });
-            marker.addListener('click', function() {
-                infowindow.open(gMap, marker);
-            });
-            infoWindowList.push(infowindow);
+            map.center(lat, lon);
+            map.setUserMarker(lat, lon);
             getRestaurantList();
         });
     } else {
