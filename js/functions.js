@@ -404,37 +404,41 @@ function getRestaurantByRate() {
     if (minValue > maxValue) {
         alert('La valeur minimale doit être inferieur à la valeur maximal pour votre recherche.');
     } else {
-        // resultSearchByRate = tout les restaurants ayant une moyenne entre minValue et maxValue
-        resultSearchByRate = restaurantList.filter(restaurant => 
-            restaurant.getRestaurantRating() >= minValue && restaurant.getRestaurantRating() <= maxValue);
+        if (restaurantList === []) {
+            alert('Aucun Restaurant ne correspond à votre recherche.');
+        } else {
+            // resultSearchByRate = tout les restaurants ayant une moyenne entre minValue et maxValue
+            resultSearchByRate = restaurantList.filter(restaurant => 
+                restaurant.getRestaurantRating() >= minValue && restaurant.getRestaurantRating() <= maxValue);
 
-        for (let i = 0; i < resultSearchByRate.length; i++) {
-            const restaurant = resultSearchByRate[i];
-            restaurantListDom += createRestaurantDom(restaurant);
+            for (let i = 0; i < resultSearchByRate.length; i++) {
+                const restaurant = resultSearchByRate[i];
+                restaurantListDom += createRestaurantDom(restaurant);
+            }
+        
+            document.getElementById('markerList').innerHTML = restaurantListDom;
+
+            // Pour chaque restaurant on créé un marker
+            resultSearchByRate.forEach(function(restaurant){
+                const marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(restaurant.getRestaurantLat(), restaurant.getRestaurantLong()),
+                    map: gMap,
+                    title: restaurant.getRestaurantName(),
+                });
+                markerList.push(marker);
+
+                const contentString = `<h5>${restaurant.getRestaurantName()}</h5>${restaurant.getRestaurantAddress()}`;
+
+                const infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+                infoWindowList.push(infowindow);
+
+                marker.addListener('click', function() {
+                    infowindow.open(gMap, marker);
+                });
+            });
         }
-    
-        document.getElementById('markerList').innerHTML = restaurantListDom;
-
-        // Pour chaque restaurant on créé un marker
-        resultSearchByRate.forEach(function(restaurant){
-            const marker = new google.maps.Marker({
-                position: new google.maps.LatLng(restaurant.getRestaurantLat(), restaurant.getRestaurantLong()),
-                map: gMap,
-                title: restaurant.getRestaurantName(),
-            });
-            markerList.push(marker);
-
-            const contentString = `<h5>${restaurant.getRestaurantName()}</h5>${restaurant.getRestaurantAddress()}`;
-
-            const infowindow = new google.maps.InfoWindow({
-                content: contentString
-            });
-            infoWindowList.push(infowindow);
-
-            marker.addListener('click', function() {
-                infowindow.open(gMap, marker);
-            });
-        });
     }
 }
 
