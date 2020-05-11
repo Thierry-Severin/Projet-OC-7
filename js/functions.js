@@ -329,11 +329,11 @@ function initRestaurantDetails(restaurant) {
 // Reupération des restaurants et de leurs informations via le service GoogleMap & GooglePlaces || en local
 function getRestaurantList() {
     // Récupération des informations sur GooglePlaces
-    const request = {
-        location: gMap.getCenter(),
-        radius: '500',
-        type: ['restaurant']
-    };
+    // const request = {
+    //     location: gMap.getCenter(),
+    //     radius: '500',
+    //     type: ['restaurant']
+    // };
     
     // const service = new google.maps.places.PlacesService(gMap);
     // service.nearbySearch(request, callback);
@@ -404,20 +404,22 @@ function getRestaurantByRate() {
     if (minValue > maxValue) {
         alert('La valeur minimale doit être inferieur à la valeur maximal pour votre recherche.');
     } else {
-        if (restaurantList === []) {
-            alert('Aucun Restaurant ne correspond à votre recherche.');
-        } else {
-            // resultSearchByRate = tout les restaurants ayant une moyenne entre minValue et maxValue
-            resultSearchByRate = restaurantList.filter(restaurant => 
-                restaurant.getRestaurantRating() >= minValue && restaurant.getRestaurantRating() <= maxValue);
+        // resultSearchByRate = tout les restaurants ayant une moyenne entre minValue et maxValue
+        resultSearchByRate = restaurantList.filter(restaurant => 
+            restaurant.getRestaurantRating() >= minValue && restaurant.getRestaurantRating() <= maxValue);
 
+        // Si resultSearchByRate est vide, on affiche un message, sinon on fait le traitement
+        // afin de récupérer uniquement les restaurants voulus
+        if (resultSearchByRate.length === 0) {
+            alert('Votre recherche ne retourne aucuns restaurants, désolé.');
+        } else {
             for (let i = 0; i < resultSearchByRate.length; i++) {
                 const restaurant = resultSearchByRate[i];
                 restaurantListDom += createRestaurantDom(restaurant);
             }
         
             document.getElementById('markerList').innerHTML = restaurantListDom;
-
+    
             // Pour chaque restaurant on créé un marker
             resultSearchByRate.forEach(function(restaurant){
                 const marker = new google.maps.Marker({
@@ -426,14 +428,14 @@ function getRestaurantByRate() {
                     title: restaurant.getRestaurantName(),
                 });
                 markerList.push(marker);
-
+    
                 const contentString = `<h5>${restaurant.getRestaurantName()}</h5>${restaurant.getRestaurantAddress()}`;
-
+    
                 const infowindow = new google.maps.InfoWindow({
                     content: contentString
                 });
                 infoWindowList.push(infowindow);
-
+    
                 marker.addListener('click', function() {
                     infowindow.open(gMap, marker);
                 });
