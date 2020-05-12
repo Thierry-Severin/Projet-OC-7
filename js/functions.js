@@ -250,29 +250,10 @@ function getRestaurantById(id) {
 
 // Créé un marker en reprenant la position (lat/lng) d'un restaurant
 function initMarkerForRestaurant(restaurant) {
-    // reinitialisation de la map
-    gMap = initMap(position);
     // Créé un marker sur la map à chaque click
     markerAtClick();
-
     // Génération d'un marker sur la position du restaurant
-    const marker = new google.maps.Marker({
-        position: new google.maps.LatLng(restaurant.getRestaurantLat(), restaurant.getRestaurantLong()),
-        map: gMap,
-        title: restaurant.getRestaurantName(),
-    });
-    markerList.push(marker);
-
-    const contentString = `<h5>${restaurant.getRestaurantName()}</h5>${restaurant.getRestaurantAddress()}`;
-    const infowindow = new google.maps.InfoWindow({
-        content: contentString
-    });
-    infoWindowList.push(infowindow);
-    infowindow.open(gMap, marker);
-
-    marker.addListener('click', function() {
-        infowindow.open(gMap, marker);
-    });
+    map.setRestaurantMarker(restaurant);
 }
 
 // Récupère les reviews créés sur le site pour le restaurant correspondant

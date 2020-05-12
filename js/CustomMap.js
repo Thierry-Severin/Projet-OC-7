@@ -61,10 +61,10 @@ class CustomMap {
             title: title,
         };
 
-        if (icon != undefined) {
+        if (icon !== undefined) {
             markerData.icon = icon;
         }
-
+        this._removeMarkers();
         // Génération d'un marker sur la position du restaurant
         const marker = new google.maps.Marker(markerData);
         this.markerList.push(marker);
@@ -85,10 +85,10 @@ class CustomMap {
         };
     }
 
-    removeMarkers() {
-        for (let i = 0; i < this.markers.length; i++) {
-            this.markers[i].setMap(null);
+    _removeMarkers() {
+        for (let i = 0; i < this.markerList.length; i++) {
+            this.markerList[i].setMap(null);
         }
-        this.markers.length = 0;
+        this.markerList.length = 0;
     }
 }
