@@ -64,7 +64,6 @@ class CustomMap {
         if (icon !== undefined) {
             markerData.icon = icon;
         }
-        this._removeMarkers();
         // Génération d'un marker sur la position du restaurant
         const marker = new google.maps.Marker(markerData);
         this.markerList.push(marker);
@@ -75,17 +74,15 @@ class CustomMap {
         this.infowindowList.push(infowindow);
         // infowindow.open(this.map, marker);
     
-        marker.addListener('click', this.showInfowindow(infowindow, marker));
+        const refInfowindowList = this.infowindowList;
+        const refMap = this.map;
+        marker.addListener('click', function() {
+            refInfowindowList.forEach((infowindow) => infowindow.close(refMap));
+            infowindow.open(refMap, marker);
+        });
     }
 
-    showInfowindow(infowindow, marker) {
-        return function () {
-            this.infowindowList.forEach((infowindow) => infowindow.close(this.map));
-            infowindow.open(this.map, marker);
-        };
-    }
-
-    _removeMarkers() {
+    removeMarkers() {
         for (let i = 0; i < this.markerList.length; i++) {
             this.markerList[i].setMap(null);
         }

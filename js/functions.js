@@ -252,6 +252,8 @@ function getRestaurantById(id) {
 function initMarkerForRestaurant(restaurant) {
     // Créé un marker sur la map à chaque click
     markerAtClick();
+
+    map.removeMarkers();
     // Génération d'un marker sur la position du restaurant
     map.setRestaurantMarker(restaurant);
 }
@@ -320,22 +322,11 @@ function getRestaurantByRate() {
                 restaurantListDom += createRestaurantDom(restaurant);
             }
             document.getElementById('markerList').innerHTML = restaurantListDom;
+            // On supprime les markers deja présents
+            map.removeMarkers();
             // Pour chaque restaurant on créé un marker
             resultSearchByRate.forEach(function (restaurant) {
-                const marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(restaurant.getRestaurantLat(), restaurant.getRestaurantLong()),
-                    map: gMap,
-                    title: restaurant.getRestaurantName(),
-                });
-                markerList.push(marker);
-                const contentString = `<h5>${restaurant.getRestaurantName()}</h5>${restaurant.getRestaurantAddress()}`;
-                const infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-                infoWindowList.push(infowindow);
-                marker.addListener('click', function () {
-                    infowindow.open(gMap, marker);
-                });
+                map.setRestaurantMarker(restaurant);
             });
         }
     }

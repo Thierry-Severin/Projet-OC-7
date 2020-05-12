@@ -44,7 +44,7 @@ $('#searchRestaurantByName').click(function() {
 // Recherche des restaurant via filtre de leur moyenne
 $('#searchRestaurantByRate').click(function() {
     // reinitialisation de la map
-    gMap = initMap();
+    // gMap = initMap();
     // Contenu de commentList caché
     removeRestaurantDetails();
     // retire les infowindow présents dans infoWindowList[]
