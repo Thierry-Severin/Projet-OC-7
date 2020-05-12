@@ -5,12 +5,14 @@ $('.addNewRestaurantForm').hide();
 window.onload = function(){
     position = new google.maps.LatLng(lat, lon);
     gMap = initMap ? initMap() : null;
+    map = new CustomMap(lat, lon, gMap);
 
     if (navigator.geolocation && gMap) {
         navigator.geolocation.getCurrentPosition(function(position) {
             lat = position.coords.latitude;
             lon = position.coords.longitude;
-            gMap.setCenter(new google.maps.LatLng(lat, lon));
+            // gMap.setCenter(new google.maps.LatLng(lat, lon));
+            map.center(lat, lon);
             const marker = new google.maps.Marker({
                 position: new google.maps.LatLng(lat, lon),
                 map: gMap,

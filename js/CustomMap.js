@@ -1,6 +1,11 @@
-class Map {
-    constructor(latitude, longitude) {
-        this.map = this._initMap(latitude, longitude);
+class CustomMap {
+    constructor(latitude, longitude, gMap=undefined) {
+        // TODO à delete apres remplacement du code google par cette class
+        if(gMap !== undefined) {
+            this.map = gMap;
+        } else {
+            this._initMap(latitude, longitude);
+        }
         this.markerList = [];
         this.infowindow = null;
         this.infowindowList = [];
@@ -70,7 +75,7 @@ class Map {
         this.infowindowList.push(infowindow);
         infowindow.open(this.map, marker);
     
-        marker.addListener('click', showInfowindow(infowindow, marker));
+        marker.addListener('click', this.showInfowindow(infowindow, marker));
     }
 
     showInfowindow(infowindow, marker) {
