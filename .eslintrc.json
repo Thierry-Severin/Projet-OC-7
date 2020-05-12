@@ -1,0 +1,44 @@
+{
+    "root": true,
+    "env": {
+        "browser": true,
+        "es6": true
+    },
+    "extends": [
+        "eslint:recommended"
+    ],
+    "globals": {
+        "Atomics": "readonly",
+        "SharedArrayBuffer": "readonly",
+        "$": "readonly",
+        "google": "readonly"
+    },
+    "plugins": [
+        // "jquery"
+    ],
+    "parserOptions": {
+        "ecmaVersion": 2018,
+        "sourceType": "module"
+    },
+    "rules": {
+        "semi": ["error", "always"],
+        "no-inner-declarations": 0,
+        "indent": ["error", 4],
+        "eqeqeq": ["warn", "always"],
+        "curly": "error",
+        "default-case": "error",
+        "no-var": "error",
+        "no-multi-spaces": "error",
+        "no-useless-constructor": "error",
+        "prefer-const": "error",
+        "prefer-rest-params": "error",
+        "prefer-spread": "error",
+        "no-console": "warn",
+        "prefer-template": "warn",
+        "quotes": [
+            "warn",
+            "single",
+            { "avoidEscape": true }
+        ]
+    }
+}

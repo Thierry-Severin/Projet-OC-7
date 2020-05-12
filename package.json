@@ -1,0 +1,22 @@
+{
+  "name": "la-bonne-fourchette",
+  "version": "1.0.0",
+  "description": "",
+  "main": "projet.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/Kanap-cross/la-bonne-fourchette.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/Kanap-cross/la-bonne-fourchette/issues"
+  },
+  "homepage": "https://gitlab.com/Kanap-cross/la-bonne-fourchette#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0"
+  }
+}

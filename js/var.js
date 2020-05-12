@@ -23,5 +23,3 @@ let latLngObj= '';
 const customReviews = [];
 // Restaurant clické par l'utilisateur dans la liste
 let selectedRestaurant;
-
-let map;

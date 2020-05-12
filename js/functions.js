@@ -22,6 +22,7 @@ function initMap() {
             style: google.maps.NavigationControlStyle.ZOOM_PAN 
         }
     });
+    // gMap = new Map(newMap);
 }
 
 // Création de la liste des restaurants
@@ -314,6 +315,51 @@ function getGooglePlacesReviews(restaurant) {
     });
 }
 
+// Récupère les restaurants dont la moyenne est comprise entre minValue & maxValue
+function getRestaurantByRate() {
+    // reinitialisation de restaurantListDom pour vider la liste
+    let restaurantListDom = '';
+    // On récupère la valeur min & max des moyennes pour effetuer une recherche
+    const minValue = document.getElementById('minValue').value;
+    const maxValue = document.getElementById('maxValue').value;
+    let resultSearchByRate = [];
+    if (minValue > maxValue) {
+        alert('La valeur minimale doit être inferieur à la valeur maximal pour votre recherche.');
+    }
+    else {
+        // resultSearchByRate = tout les restaurants ayant une moyenne entre minValue et maxValue
+        resultSearchByRate = restaurantList.filter(restaurant => restaurant.getRestaurantRating() >= minValue 
+            && restaurant.getRestaurantRating() <= maxValue);
+
+        if (resultSearchByRate.length === 0) {
+            alert('Votre recherche ne retourne aucuns restaurants.');
+        } else {
+            for (let i = 0; i < resultSearchByRate.length; i++) {
+                const restaurant = resultSearchByRate[i];
+                restaurantListDom += createRestaurantDom(restaurant);
+            }
+            document.getElementById('markerList').innerHTML = restaurantListDom;
+            // Pour chaque restaurant on créé un marker
+            resultSearchByRate.forEach(function (restaurant) {
+                const marker = new google.maps.Marker({
+                    position: new google.maps.LatLng(restaurant.getRestaurantLat(), restaurant.getRestaurantLong()),
+                    map: gMap,
+                    title: restaurant.getRestaurantName(),
+                });
+                markerList.push(marker);
+                const contentString = `<h5>${restaurant.getRestaurantName()}</h5>${restaurant.getRestaurantAddress()}`;
+                const infowindow = new google.maps.InfoWindow({
+                    content: contentString
+                });
+                infoWindowList.push(infowindow);
+                marker.addListener('click', function () {
+                    infowindow.open(gMap, marker);
+                });
+            });
+        }
+    }
+}
+
 // Affiche les détails d'un restaurant
 function initRestaurantDetails(restaurant) {
     if (!restaurant.getPlace_id() || restaurant.getPlace_id() === 'N/A') {
@@ -393,57 +439,6 @@ function getRestaurantList() {
     //     });
 }
 
-function getRestaurantByRate() {
-    // reinitialisation de restaurantListDom pour vider la liste
-    let restaurantListDom = '';
-    // On récupère la valeur min & max des moyennes pour effetuer une recherche
-    const minValue = document.getElementById('minValue').value;
-    const maxValue = document.getElementById('maxValue').value;
-    let resultSearchByRate = [];
-    
-    if (minValue > maxValue) {
-        alert('La valeur minimale doit être inferieur à la valeur maximal pour votre recherche.');
-    } else {
-        // resultSearchByRate = tout les restaurants ayant une moyenne entre minValue et maxValue
-        resultSearchByRate = restaurantList.filter(restaurant => 
-            restaurant.getRestaurantRating() >= minValue && restaurant.getRestaurantRating() <= maxValue);
-
-        // Si resultSearchByRate est vide, on affiche un message, sinon on fait le traitement
-        // afin de récupérer uniquement les restaurants voulus
-        if (resultSearchByRate.length === 0) {
-            alert('Votre recherche ne retourne aucuns restaurants, désolé.');
-        } else {
-            for (let i = 0; i < resultSearchByRate.length; i++) {
-                const restaurant = resultSearchByRate[i];
-                restaurantListDom += createRestaurantDom(restaurant);
-            }
-        
-            document.getElementById('markerList').innerHTML = restaurantListDom;
-    
-            // Pour chaque restaurant on créé un marker
-            resultSearchByRate.forEach(function(restaurant){
-                const marker = new google.maps.Marker({
-                    position: new google.maps.LatLng(restaurant.getRestaurantLat(), restaurant.getRestaurantLong()),
-                    map: gMap,
-                    title: restaurant.getRestaurantName(),
-                });
-                markerList.push(marker);
-    
-                const contentString = `<h5>${restaurant.getRestaurantName()}</h5>${restaurant.getRestaurantAddress()}`;
-    
-                const infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-                infoWindowList.push(infowindow);
-    
-                marker.addListener('click', function() {
-                    infowindow.open(gMap, marker);
-                });
-            });
-        }
-    }
-}
-
 function getRestaurantByName() {
     const restaurantSearched = document.getElementById('searchBar').value;
     
@@ -510,7 +505,6 @@ function getRestaurantWhenDragend() {
         position = gMap.getCenter();
         getRestaurantNearby(position);
         removeRestaurantDetails();
-        markerClose(markerList);
     });
 }
 
@@ -539,6 +533,7 @@ function getRestaurantNearby() {
                     restaurant.place_id,
                     []
                 );
+                restaurantList.push(newRestaurant);
                 const marker = new google.maps.Marker({
                     position: restaurant.geometry.location,
                     map: gMap
@@ -556,7 +551,6 @@ function getRestaurantNearby() {
                 });
                 
                 infoWindowList.push(infowindow);
-                restaurantList.push(newRestaurant);
             });
             createRestaurantList();
             markerAtClick();
