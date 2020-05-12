@@ -73,7 +73,7 @@ class CustomMap {
             content: infoWindowContentString
         });
         this.infowindowList.push(infowindow);
-        infowindow.open(this.map, marker);
+        // infowindow.open(this.map, marker);
     
         marker.addListener('click', this.showInfowindow(infowindow, marker));
     }

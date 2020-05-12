@@ -534,23 +534,7 @@ function getRestaurantNearby() {
                     []
                 );
                 restaurantList.push(newRestaurant);
-                const marker = new google.maps.Marker({
-                    position: restaurant.geometry.location,
-                    map: gMap
-                });
-                markerList.push(marker);
-            
-                const contentString = `<h5>${restaurant.name}</h5>${restaurant.formatted_address}`;
-            
-                const infowindow = new google.maps.InfoWindow({
-                    content: contentString
-                });
-
-                marker.addListener('click', function() {
-                    infowindow.open(gMap, marker);
-                });
-                
-                infoWindowList.push(infowindow);
+                map.setRestaurantMarker(newRestaurant);
             });
             createRestaurantList();
             markerAtClick();
