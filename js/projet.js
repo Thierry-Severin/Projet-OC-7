@@ -54,7 +54,7 @@ $('#searchRestaurantByRate').click(function() {
     // Récupère les restaurants dont la moyenne est comprise entre minValue & maxValue
     getRestaurantByRate();
 
-    getRestaurantWhenDragend();
+    // getRestaurantWhenDragend();
 });
 
 // Lors du clic sur un restaurant de la liste - affichage de plus d'informations

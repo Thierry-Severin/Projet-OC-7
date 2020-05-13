@@ -256,6 +256,8 @@ function initMarkerForRestaurant(restaurant) {
     map.removeMarkers();
     // Génération d'un marker sur la position du restaurant
     map.setRestaurantMarker(restaurant);
+
+    map.center(restaurant.getRestaurantLat(), restaurant.getRestaurantLong());
 }
 
 // Récupère les reviews créés sur le site pour le restaurant correspondant
@@ -434,35 +436,19 @@ function getRestaurantByName() {
                     const newRestaurant = new Restaurant(
                         restaurant.name,
                         restaurant.formatted_address,
-                        restaurant.geometry.location.lat,
-                        restaurant.geometry.location.lng,
+                        restaurant.geometry.location.lat(),
+                        restaurant.geometry.location.lng(),
                         restaurant.rating,
                         restaurant.place_id
                     );
-                    const marker = new google.maps.Marker({
-                        position: restaurant.geometry.location,
-                        map: gMap
-                    });
-                    markerList.push(marker);
-                
-                    const contentString = `<h5>${restaurant.name}</h5>${restaurant.formatted_address}`;
-                
-                    const infowindow = new google.maps.InfoWindow({
-                        content: contentString
-                    });
-    
-                    marker.addListener('click', function() {
-                        infowindow.open(gMap, marker);
-                    });
-                    
-                    infoWindowList.push(infowindow);
-                    infowindow.open(gMap, marker);
+                    map.removeMarkers();
+                    map.setRestaurantMarker(newRestaurant);
     
                     restaurantList.unshift(newRestaurant);
                 });
     
                 createRestaurantList();
-                gMap.setCenter(results[0].geometry.location);
+                map.center(results[0].geometry.location.lat(), results[0].geometry.location.lng());
             }
         });
     } else {
@@ -475,6 +461,7 @@ function getRestaurantWhenDragend() {
     // A chaque event 'dragend' on prend la position et on ajoute les restaurants alentours
     gMap.addListener('dragend', function(){
         position = gMap.getCenter();
+        map.center(position.lat(), position.lng());
         getRestaurantNearby(position);
         removeRestaurantDetails();
     });

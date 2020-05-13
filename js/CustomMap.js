@@ -74,11 +74,11 @@ class CustomMap {
         this.infowindowList.push(infowindow);
         // infowindow.open(this.map, marker);
     
-        const refInfowindowList = this.infowindowList;
-        const refMap = this.map;
+        // Création de CustomMap pour référencer la class CustomMap dans l'addListener
+        const CustomMap = this;
         marker.addListener('click', function() {
-            refInfowindowList.forEach((infowindow) => infowindow.close(refMap));
-            infowindow.open(refMap, marker);
+            CustomMap.infowindowList.forEach((infowindow) => infowindow.close(CustomMap.map));
+            infowindow.open(CustomMap.map, marker);
         });
     }
 
