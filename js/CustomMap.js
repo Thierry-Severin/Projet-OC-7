@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 class CustomMap {
     constructor(latitude, longitude) {
         this._initMap(latitude, longitude);
@@ -84,7 +85,7 @@ class CustomMap {
             content: infoWindowContentString
         });
         this.infowindowList.push(infowindow);
-    
+
         // Création de customMap pour référencer la class CustomMap dans l'addListener
         const customMap = this;
         marker.addListener('click', function() {
@@ -278,8 +279,8 @@ class CustomMap {
         document.getElementById('newAddress').innerHTML = formattedAddress;
 
         const form = $('.addNewRestaurantForm').clone().show();
-        let infowindow_content = form[0];
-        let infowindow = new google.maps.InfoWindow({
+        const infowindow_content = form[0];
+        const infowindow = new google.maps.InfoWindow({
             content: infowindow_content
         });
 

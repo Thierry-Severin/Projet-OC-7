@@ -1,11 +1,10 @@
+/* eslint-disable no-undef */
 // Masque le formulaire d'ajout de restaurant présent dans une infowindow
 $('.addNewRestaurantForm').hide();
 
 // Au chargement de la page : choix de la géolocalisation ou non par l'utilisateur
 window.onload = function(){
     position = new google.maps.LatLng(lat, lon);
-    // gMap = initMap ? initMap() : null;
-    // map = new CustomMap(lat, lon, gMap);
     map = new CustomMap(lat, lon);
 
     if (navigator.geolocation) {
@@ -14,13 +13,11 @@ window.onload = function(){
             lon = position.coords.longitude;
             map.center(lat, lon);
             map.setUserMarker(lat, lon);
-            // getRestaurantList();
             map.getRestaurantList();
         }, function() {
             alert('La position par défaut à été définie sur Paris.');
             map.center(lat, lon);
             map.setUserMarker(lat, lon);
-            // getRestaurantList();
             map.getRestaurantList();
         });
     } else {
@@ -28,8 +25,6 @@ window.onload = function(){
     }
     map.markerAtRightClick();
     map.getRestaurantWhenDragend();
-    // Créé un marker sur la map à chaque click
-    // markerAtClick();
 
     // Chargement du bouton pour l'ajout d'un commentaire
     $('#addCommentBtn').click(function() {

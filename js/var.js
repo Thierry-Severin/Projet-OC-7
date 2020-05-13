@@ -12,7 +12,7 @@ const infoWindowList = [];
 // Ajout de chaque marker dans cet array
 const markerList = [];
 // Contient la map après initialisation
-let gMap = undefined;
+let map;
 // Initialisation de GeoCoder
 const geoCoder = new google.maps.Geocoder();
 // LatLng convertit en address lisible une fois valorisé
@@ -23,5 +23,3 @@ let latLngObj= '';
 const customReviews = [];
 // Restaurant clické par l'utilisateur dans la liste
 let selectedRestaurant;
-
-let map;
