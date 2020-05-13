@@ -1,29 +1,30 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
 // Fonction d'initialisation de la carte
-function initMap() {
-    return new google.maps.Map(document.getElementById('gMap'), {
-        // Centre de la carte avec les coordonnées
-        center: position, 
-        // Zoom par défaut
-        zoom: 14, 
-        // Type de carte (ici carte routière)
-        mapTypeId: google.maps.MapTypeId.ROADMAP, 
-        // Options de contrôle de la carte (plan, satellite...)
-        mapTypeControl: true,
-        // Nous désactivons la roulette de souris
-        scrollwheel: false, 
-        mapTypeControlOptions: {
-            // Définit comment les options se placent
-            style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR 
-        },
-        // Activation des options de navigation dans la carte (zoom...)
-        navigationControl: true, 
-        navigationControlOptions: {
-            // Affichage des options
-            style: google.maps.NavigationControlStyle.ZOOM_PAN 
-        }
-    });
-    // gMap = new Map(newMap);
-}
+// function initMap() {
+//     return new google.maps.Map(document.getElementById('gMap'), {
+//         // Centre de la carte avec les coordonnées
+//         center: position, 
+//         // Zoom par défaut
+//         zoom: 14, 
+//         // Type de carte (ici carte routière)
+//         mapTypeId: google.maps.MapTypeId.ROADMAP, 
+//         // Options de contrôle de la carte (plan, satellite...)
+//         mapTypeControl: true,
+//         // Nous désactivons la roulette de souris
+//         scrollwheel: false, 
+//         mapTypeControlOptions: {
+//             // Définit comment les options se placent
+//             style: google.maps.MapTypeControlStyle.HORIZONTAL_BAR 
+//         },
+//         // Activation des options de navigation dans la carte (zoom...)
+//         navigationControl: true, 
+//         navigationControlOptions: {
+//             // Affichage des options
+//             style: google.maps.NavigationControlStyle.ZOOM_PAN 
+//         }
+//     });
+// }
 
 // Création de la liste des restaurants
 function createRestaurantDom(restaurant) {
@@ -39,7 +40,7 @@ function createRestaurantDom(restaurant) {
 // Ajout d'un message dans la liste si aucuns restaurant n'est trouvé
 function emptyRestaurantList() {
     return `<li id='noRestaurantFound' class='list-group-item liElement'>
-                <h5>Aucuns Restaurant n\'à été trouvé.</h5>
+                <h5>Aucuns Restaurant n'à été trouvé.</h5>
             </li>`;
 }
 
@@ -65,54 +66,54 @@ function infoWindowClose(infoWindowList) {
 }
 
 // Retire tout les marker de la map
-function markerClose(markerList) {
-    markerList.forEach(function(marker) {
-        marker.setMap(null);
-    });
-}
+// function markerClose(markerList) {
+//     markerList.forEach(function(marker) {
+//         marker.setMap(null);
+//     });
+// }
 
 // Récupère lat et lng sur la map et créé un marker avec ces coordonnées
-function markerAtClick() {
-    google.maps.event.addListener(gMap, 'rightclick', function(event) {
-        markerClose(markerList);
-        geoCoder.geocode({'location': event.latLng}, function(results, status) {
-            if (status === 'OK') {
-                if (results[0]) {
-                    gMap.setZoom(15);
-                    const marker = new google.maps.Marker({
-                        position: event.latLng,
-                        map: gMap
-                    });
-                    markerList.push(marker);
+// function markerAtRightClick() {
+//     google.maps.event.addListener(gMap, 'rightclick', function(event) {
+//         markerClose(markerList);
+//         geoCoder.geocode({'location': event.latLng}, function(results, status) {
+//             if (status === 'OK') {
+//                 if (results[0]) {
+//                     gMap.setZoom(15);
+//                     const marker = new google.maps.Marker({
+//                         position: event.latLng,
+//                         map: gMap
+//                     });
+//                     markerList.push(marker);
 
-                    formattedAddress = results[0].formatted_address;
-                    latLngObj = event.latLng;
+//                     formattedAddress = results[0].formatted_address;
+//                     latLngObj = event.latLng;
 
-                    document.getElementById('newAddress').innerHTML = formattedAddress;
+//                     document.getElementById('newAddress').innerHTML = formattedAddress;
 
-                    const form = $('.addNewRestaurantForm').clone().show();
-                    const infowindow_content = form[0];
-                    const infowindow = new google.maps.InfoWindow({
-                        content: infowindow_content
-                    });
+//                     const form = $('.addNewRestaurantForm').clone().show();
+//                     const infowindow_content = form[0];
+//                     const infowindow = new google.maps.InfoWindow({
+//                         content: infowindow_content
+//                     });
 
-                    form.click(function(){
-                        $('#addRestaurantBtn').click(function() {
-                            createNewRestaurant(restaurantList);
-                        });
-                    });
+//                     form.click(function(){
+//                         $('#addRestaurantBtn').click(function() {
+//                             createNewRestaurant(restaurantList);
+//                         });
+//                     });
 
-                    infoWindowList.push(infowindow);
-                    infowindow.open(gMap, marker);
-                } else {
-                    alert('Aucun résultat trouvé.');
-                }
-            } else {
-                alert(`Geocoder failed due to: ${status}`);
-            }
-        });
-    });
-}
+//                     infoWindowList.push(infowindow);
+//                     infowindow.open(gMap, marker);
+//                 } else {
+//                     alert('Aucun résultat trouvé.');
+//                 }
+//             } else {
+//                 alert(`Geocoder failed due to: ${status}`);
+//             }
+//         });
+//     });
+// }
 
 // Créé un nouveau restaurant d'après un marker posé manuellement
 function createNewRestaurant() {
@@ -127,8 +128,8 @@ function createNewRestaurant() {
         const newRestaurant = new Restaurant(
             newRestaurantName,
             formattedAddress,
-            latLngObj.lat(),
-            latLngObj.lng(),
+            latLngObj.lat,
+            latLngObj.lng,
             0,
             'N/A',
             'N/A'
@@ -250,13 +251,11 @@ function getRestaurantById(id) {
 
 // Créé un marker en reprenant la position (lat/lng) d'un restaurant
 function initMarkerForRestaurant(restaurant) {
-    // Créé un marker sur la map à chaque click
-    markerAtClick();
 
     map.removeMarkers();
     // Génération d'un marker sur la position du restaurant
     map.setRestaurantMarker(restaurant);
-
+    // Centre la map sur le marker du restaurant
     map.center(restaurant.getRestaurantLat(), restaurant.getRestaurantLong());
 }
 
@@ -266,39 +265,39 @@ function getCustomReviewsByRestaurantId(id) {
 }
 
 // Récupère les reviews grâce à GooglePlaces
-function getGooglePlacesReviews(restaurant) {
-    // Récupération des reviews de chaque restaurants sur GooglePlaces via restaurant.place_id
-    const request = {
-        placeId: restaurant.place_id,
-        fields: ['review']
-    };
+// function getGooglePlacesReviews(restaurant) {
+//     // Récupération des reviews de chaque restaurants sur GooglePlaces via restaurant.place_id
+//     const request = {
+//         placeId: restaurant.place_id,
+//         fields: ['review']
+//     };
 
-    const service = new google.maps.places.PlacesService(gMap);
-    service.getDetails(request, function(place, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            let googlePlacesReviews = [];
-            // Si un restaurant n'a pas de reviews, alors place.reviews === undefined
-            if (place.reviews) {
-                googlePlacesReviews = place.reviews.map(function(review) {
-                    return new Review(
-                        review.author_name, 
-                        review.rating, 
-                        review.text
-                    );
-                });
-            }
+//     const service = new google.maps.places.PlacesService(gMap);
+//     service.getDetails(request, function(place, status) {
+//         if (status === google.maps.places.PlacesServiceStatus.OK) {
+//             let googlePlacesReviews = [];
+//             // Si un restaurant n'a pas de reviews, alors place.reviews === undefined
+//             if (place.reviews) {
+//                 googlePlacesReviews = place.reviews.map(function(review) {
+//                     return new Review(
+//                         review.author_name, 
+//                         review.rating, 
+//                         review.text
+//                     );
+//                 });
+//             }
 
-            const restaurantCustomReviews = getCustomReviewsByRestaurantId(restaurant.id);
+//             const restaurantCustomReviews = getCustomReviewsByRestaurantId(restaurant.id);
 
-            const restaurantReviews = googlePlacesReviews.concat(restaurantCustomReviews);
-            restaurant.setReviews(restaurantReviews);
+//             const restaurantReviews = googlePlacesReviews.concat(restaurantCustomReviews);
+//             restaurant.setReviews(restaurantReviews);
             
-            refreshRestaurantDetailsView(restaurant);
-        } else {
-            alert('Impossible de récupérer les reviews.', status);
-        }
-    });
-}
+//             refreshRestaurantDetailsView(restaurant);
+//         } else {
+//             alert('Impossible de récupérer les reviews.', status);
+//         }
+//     });
+// }
 
 // Récupère les restaurants dont la moyenne est comprise entre minValue & maxValue
 function getRestaurantByRate() {
@@ -342,164 +341,166 @@ function initRestaurantDetails(restaurant) {
             
         refreshRestaurantDetailsView(restaurant);
     } else {
-        getGooglePlacesReviews(restaurant);
+        map.getGooglePlacesReviews(restaurant);
     }
 }
 
 // Reupération des restaurants et de leurs informations via le service GoogleMap & GooglePlaces || en local
-function getRestaurantList() {
-    // Récupération des informations sur GooglePlaces
-    const request = {
-        location: gMap.getCenter(),
-        radius: '500',
-        type: ['restaurant']
-    };
+// function getRestaurantList() {
+//     // Récupération des informations sur GooglePlaces
+//     const request = {
+//         location: gMap.getCenter(),
+//         radius: '500',
+//         type: ['restaurant']
+//     };
     
-    const service = new google.maps.places.PlacesService(gMap);
-    service.nearbySearch(request, callback);
+//     const service = new google.maps.places.PlacesService(gMap);
+//     service.nearbySearch(request, callback);
     
-    function callback(results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            results.forEach(function (restaurant) {
+//     function callback(results, status) {
+//         if (status === google.maps.places.PlacesServiceStatus.OK) {
+//             results.forEach(function (restaurant) {
 
-                const newRestaurant = new Restaurant(
-                    restaurant.name, 
-                    restaurant.vicinity, 
-                    restaurant.geometry.location.lat(), 
-                    restaurant.geometry.location.lng(), 
-                    restaurant.rating, 
-                    restaurant.place_id,
-                    []
-                );
-                restaurantList.push(newRestaurant);
-            });
+//                 const newRestaurant = new Restaurant(
+//                     restaurant.name, 
+//                     restaurant.vicinity, 
+//                     restaurant.geometry.location.lat(), 
+//                     restaurant.geometry.location.lng(), 
+//                     restaurant.rating, 
+//                     restaurant.place_id,
+//                     []
+//                 );
+//                 restaurantList.push(newRestaurant);
+//             });
 
-            createRestaurantList();
-            markerAtClick();
-        }
-    }
+//             createRestaurantList();
+//             markerAtRightClick();
+//         }
+//     }
 
-    // En local via JSON
-    // fetch('js/data.json')
-    //     .then(response => response.json())
-    //     .then(function(results) {
-    //         results.forEach(function (restaurant) {
-    //             const reviews = restaurant.ratings.map((rating) => new CustomReview(
-    //                 undefined,
-    //                 rating.stars,
-    //                 rating.comment
-    //             ));
+// En local via JSON
+// fetch('js/data.json')
+//     .then(response => response.json())
+//     .then(function(results) {
+//         results.forEach(function (restaurant) {
+//             const reviews = restaurant.ratings.map((rating) => new CustomReview(
+//                 undefined,
+//                 rating.stars,
+//                 rating.comment
+//             ));
 
-    //             let rating = 0;
-    //             reviews.forEach((review) => rating += review.rate);
-    //             rating /= reviews.length;
+//             let rating = 0;
+//             reviews.forEach((review) => rating += review.rate);
+//             rating /= reviews.length;
 
-    //             const newRestaurant = new Restaurant(
-    //                 restaurant.restaurantName, 
-    //                 restaurant.address, 
-    //                 restaurant.lat, 
-    //                 restaurant.long,
-    //                 rating.toFixed(1),
-    //                 undefined,
-    //                 reviews
-    //             );
-    //             newRestaurant.reviews.forEach((review) => review.restaurantId = newRestaurant.id);
-    //             restaurantList.push(newRestaurant);
-    //         });
+//             const newRestaurant = new Restaurant(
+//                 restaurant.restaurantName, 
+//                 restaurant.address, 
+//                 restaurant.lat, 
+//                 restaurant.long,
+//                 rating.toFixed(1),
+//                 undefined,
+//                 reviews
+//             );
+//             newRestaurant.reviews.forEach((review) => review.restaurantId = newRestaurant.id);
+//             restaurantList.push(newRestaurant);
+//         });
         
-    //         restaurantList.flatMap((restaurant) => restaurant.reviews).forEach((review) => customReviews.push(review));
-    //         createRestaurantList();
-    //         markerAtClick();
-    //     });
-}
+//         restaurantList.flatMap((restaurant) => restaurant.reviews).forEach((review) => customReviews.push(review));
+//         createRestaurantList();
+//         markerAtClick();
+//     });
+// }
 
-function getRestaurantByName() {
-    const restaurantSearched = document.getElementById('searchBar').value;
+// function getRestaurantByName() {
+//     const restaurantSearched = document.getElementById('searchBar').value;
     
-    if (restaurantSearched) {
-        // Récupération des informations sur GooglePlaces
-        const request = {
-            query: restaurantSearched,
-            fields: ['name', 'geometry', 'formatted_address', 'rating', 'place_id'],
-            locationBias: gMap.getCenter()
-        };
+//     if (restaurantSearched) {
+//         // Récupération des informations sur GooglePlaces
+//         const request = {
+//             query: restaurantSearched,
+//             fields: ['name', 'geometry', 'formatted_address', 'rating', 'place_id'],
+//             locationBias: map.getCustomMapCenter()
+//         };
         
-        const service = new google.maps.places.PlacesService(gMap);
+//         const service = new google.maps.places.PlacesService(gMap);
         
-        service.findPlaceFromQuery(request, function(results, status) {
-            if (status === google.maps.places.PlacesServiceStatus.OK) {
-                const resultSearchedByName = results;
-                if (resultSearchedByName === undefined) {
-                    alert('Votre recherche ne retourne aucuns restaurants, désolé.');
-                }
-                resultSearchedByName.forEach(function(restaurant) {
-                    const newRestaurant = new Restaurant(
-                        restaurant.name,
-                        restaurant.formatted_address,
-                        restaurant.geometry.location.lat(),
-                        restaurant.geometry.location.lng(),
-                        restaurant.rating,
-                        restaurant.place_id
-                    );
-                    map.removeMarkers();
-                    map.setRestaurantMarker(newRestaurant);
-    
-                    restaurantList.unshift(newRestaurant);
-                });
-    
-                createRestaurantList();
-                map.center(results[0].geometry.location.lat(), results[0].geometry.location.lng());
-            }
-        });
-    } else {
-        alert('Veuillez saisir un restaurant à rechercher.');
-    }
-    document.getElementById('searchBar').value = '';
-}
+//         service.findPlaceFromQuery(request, function(results, status) {
+//             if (status === google.maps.places.PlacesServiceStatus.OK) {
+//                 const resultSearchedByName = results;
+//                 const existingRestaurant = restaurantList.find(restaurant => restaurant.place_id === resultSearchedByName[0].place_id);
+//                 if (existingRestaurant === undefined) {
+//                     resultSearchedByName.forEach(function(restaurant) {
+//                         const newRestaurant = new Restaurant(
+//                             restaurant.name,
+//                             restaurant.formatted_address,
+//                             restaurant.geometry.location.lat(),
+//                             restaurant.geometry.location.lng(),
+//                             restaurant.rating,
+//                             restaurant.place_id
+//                         );
+//                         map.removeMarkers();
+//                         map.setRestaurantMarker(newRestaurant);
+//                         restaurantList.unshift(newRestaurant);
+//                     });
+//                     createRestaurantList();
+//                     map.center(results[0].geometry.location.lat(), results[0].geometry.location.lng());
+//                 } else {
+//                     alert('Ce restaurant existe déjà dans la liste.');
+//                 }
+//             } else {
+//                 alert('Votre recherche ne retourne aucuns restaurants, désolé.');
+//             }
+//         });
+//     } else {
+//         alert('Veuillez saisir un restaurant à rechercher.');
+//     }
+//     document.getElementById('searchBar').value = '';
+// }
 
-function getRestaurantWhenDragend() {
-    // A chaque event 'dragend' on prend la position et on ajoute les restaurants alentours
-    gMap.addListener('dragend', function(){
-        position = gMap.getCenter();
-        map.center(position.lat(), position.lng());
-        getRestaurantNearby(position);
-        removeRestaurantDetails();
-    });
-}
+// function getRestaurantWhenDragend() {
+//     // A chaque event 'dragend' on prend la position et on ajoute les restaurants alentours
+//     gMap.addListener('dragend', function(){
+//         map.removeMarkers();
+//         position = gMap.getCenter();
+//         map.center(position.lat(), position.lng());
+//         map.getRestaurantNearby(position);
+//         removeRestaurantDetails();
+//     });
+// }
 
 // Fonction pour ajouter les restaurants alentours
-function getRestaurantNearby() {
-    // Récupération des informations sur GooglePlaces
-    const request = {
-        location: position,
-        radius: '1000',
-        type: ['restaurant']
-    };
+// function getRestaurantNearby() {
+//     // Récupération des informations sur GooglePlaces
+//     const request = {
+//         location: position,
+//         radius: '1000',
+//         type: ['restaurant']
+//     };
     
-    const service = new google.maps.places.PlacesService(gMap);
-    service.nearbySearch(request, callback);
+//     const service = new google.maps.places.PlacesService(gMap);
+//     service.nearbySearch(request, callback);
     
-    function callback(results, status) {
-        restaurantList = [];
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            results.forEach(function (restaurant) {
-                const newRestaurant = new Restaurant(
-                    restaurant.name, 
-                    restaurant.vicinity, 
-                    restaurant.geometry.location.lat(), 
-                    restaurant.geometry.location.lng(), 
-                    restaurant.rating, 
-                    restaurant.place_id,
-                    []
-                );
-                restaurantList.push(newRestaurant);
-                map.setRestaurantMarker(newRestaurant);
-            });
-            createRestaurantList();
-            markerAtClick();
-        } else {
-            document.getElementById('markerList').innerHTML = emptyRestaurantList();
-            alert('Aucuns restaurants n\'à été trouvé dans cette zone.');
-        }
-    }
-}
+//     function callback(results, status) {
+//         restaurantList = [];
+//         if (status === google.maps.places.PlacesServiceStatus.OK) {
+//             results.forEach(function (restaurant) {
+//                 const newRestaurant = new Restaurant(
+//                     restaurant.name, 
+//                     restaurant.vicinity, 
+//                     restaurant.geometry.location.lat(), 
+//                     restaurant.geometry.location.lng(), 
+//                     restaurant.rating, 
+//                     restaurant.place_id,
+//                     []
+//                 );
+//                 restaurantList.push(newRestaurant);
+//                 map.setRestaurantMarker(newRestaurant);
+//             });
+//             createRestaurantList();
+//         } else {
+//             document.getElementById('markerList').innerHTML = emptyRestaurantList();
+//             alert('Aucuns restaurants n\'à été trouvé dans cette zone.');
+//         }
+//     }
+// }

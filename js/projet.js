@@ -4,27 +4,32 @@ $('.addNewRestaurantForm').hide();
 // Au chargement de la page : choix de la géolocalisation ou non par l'utilisateur
 window.onload = function(){
     position = new google.maps.LatLng(lat, lon);
-    gMap = initMap ? initMap() : null;
-    map = new CustomMap(lat, lon, gMap);
+    // gMap = initMap ? initMap() : null;
+    // map = new CustomMap(lat, lon, gMap);
+    map = new CustomMap(lat, lon);
 
-    if (navigator.geolocation && gMap) {
+    if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             lat = position.coords.latitude;
             lon = position.coords.longitude;
             map.center(lat, lon);
             map.setUserMarker(lat, lon);
-            getRestaurantList();
+            // getRestaurantList();
+            map.getRestaurantList();
         }, function() {
             alert('La position par défaut à été définie sur Paris.');
             map.center(lat, lon);
             map.setUserMarker(lat, lon);
-            getRestaurantList();
+            // getRestaurantList();
+            map.getRestaurantList();
         });
     } else {
         alert('La Géolocalisation n\'est pas disponible sur votre Navigateur.');
     }
-    
-    getRestaurantWhenDragend();
+    map.markerAtRightClick();
+    map.getRestaurantWhenDragend();
+    // Créé un marker sur la map à chaque click
+    // markerAtClick();
 
     // Chargement du bouton pour l'ajout d'un commentaire
     $('#addCommentBtn').click(function() {
@@ -34,27 +39,23 @@ window.onload = function(){
 
 // Recherche d'un restaurant via la navbar
 $('#searchRestaurantByName').click(function() {
-    getRestaurantWhenDragend();
+    map.getRestaurantWhenDragend();
     // Contenu de commentList caché
     removeRestaurantDetails();
     // Requete pour récupérer le restaurant via le son nom grâce à la barre de recherche
-    getRestaurantByName();
+    map.getRestaurantByName();
 });
 
 // Recherche des restaurant via filtre de leur moyenne
 $('#searchRestaurantByRate').click(function() {
-    // reinitialisation de la map
-    // gMap = initMap();
     // Contenu de commentList caché
     removeRestaurantDetails();
     // retire les infowindow présents dans infoWindowList[]
     infoWindowClose(infoWindowList);
-    // Créé un marker sur la map à chaque click
-    markerAtClick();
     // Récupère les restaurants dont la moyenne est comprise entre minValue & maxValue
     getRestaurantByRate();
 
-    // getRestaurantWhenDragend();
+    map.getRestaurantWhenDragend();
 });
 
 // Lors du clic sur un restaurant de la liste - affichage de plus d'informations
@@ -68,5 +69,5 @@ $('#markerList').on('click','li.liElement', function() {
     
         initRestaurantDetails(restaurantMatched);
     }
-    getRestaurantWhenDragend();
+    map.getRestaurantWhenDragend();
 });
