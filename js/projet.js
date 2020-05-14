@@ -13,12 +13,14 @@ window.onload = function(){
             lon = position.coords.longitude;
             map.center(lat, lon);
             map.setUserMarker(lat, lon);
-            map.getRestaurantList();
+            // map.getRestaurantList();
+            map.getLocalRestaurantList();
         }, function() {
             alert('La position par défaut à été définie sur Paris.');
             map.center(lat, lon);
             map.setUserMarker(lat, lon);
-            map.getRestaurantList();
+            // map.getRestaurantList();
+            map.getLocalRestaurantList();
         });
     } else {
         alert('La Géolocalisation n\'est pas disponible sur votre Navigateur.');

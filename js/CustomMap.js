@@ -136,6 +136,41 @@ class CustomMap {
         }
     }
 
+    getLocalRestaurantList() {
+        // En local via JSON
+        fetch('js/data.json')
+            .then(response => response.json())
+            .then(function(results) {
+                results.forEach(function (restaurant) {
+                    const reviews = restaurant.ratings.map((rating) => new CustomReview(
+                        undefined,
+                        rating.stars,
+                        rating.comment
+                    ));
+
+                    let rating = 0;
+                    reviews.forEach((review) => rating += review.rate);
+                    rating /= reviews.length;
+
+                    const newRestaurant = new Restaurant(
+                        restaurant.restaurantName, 
+                        restaurant.address, 
+                        restaurant.lat, 
+                        restaurant.long,
+                        rating.toFixed(1),
+                        undefined,
+                        reviews
+                    );
+                    newRestaurant.reviews.forEach((review) => review.restaurantId = newRestaurant.id);
+                    restaurantList.push(newRestaurant);
+                });
+        
+                restaurantList.flatMap((restaurant) => restaurant.reviews).forEach((review) => customReviews.push(review));
+                createRestaurantList();
+                markerAtClick();
+            });
+    }
+
     // Récupération des restaurants alentours
     getRestaurantNearby(position) {
         // Récupération des informations sur GooglePlaces
