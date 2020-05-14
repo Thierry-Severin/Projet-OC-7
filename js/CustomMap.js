@@ -167,7 +167,7 @@ class CustomMap {
         
                 restaurantList.flatMap((restaurant) => restaurant.reviews).forEach((review) => customReviews.push(review));
                 createRestaurantList();
-                markerAtClick();
+                map.markerAtRightClick();
             });
     }
 
