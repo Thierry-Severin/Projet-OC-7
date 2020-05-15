@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
-
 // Création de la liste des restaurants
 function createRestaurantDom(restaurant) {
     return `<li id='${restaurant.getId()}' class='list-group-item liElement'>
@@ -123,6 +122,7 @@ function buildRestaurantDetails(restaurantMatched) {
             </div>`;
 }
 
+// Cache les details d'un restaurant'
 function removeRestaurantDetails() {
     $('.commentList').hide();
 }

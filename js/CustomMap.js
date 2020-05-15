@@ -7,7 +7,7 @@ class CustomMap {
         this.infowindowList = [];
     }
 
-    // Initialisation de la map
+    // Methode privée pour l'initialisation de la map
     _initMap(latitude, longitude) {
         this.map = new google.maps.Map(document.getElementById('gMap'), {
             // Centre de la carte avec les coordonnées
@@ -66,7 +66,7 @@ class CustomMap {
         );
     }
     
-    // Création d'un marker
+    // Méthode privée pour la création d'un marker
     _setMarker(latitude, longitude, title, infoWindowContentString, icon = undefined) {
         const markerData = {
             position: new google.maps.LatLng(latitude, longitude),
@@ -74,6 +74,7 @@ class CustomMap {
             title: title,
         };
 
+        // Afficher l'icon utilisateur si renseigné en paramètre
         if (icon !== undefined) {
             markerData.icon = icon;
         }
@@ -135,7 +136,6 @@ class CustomMap {
 
     // Récupération des restaurants via GooglePlaces
     getRestaurantList() {
-        // Récupération des informations sur GooglePlaces
         const request = {
             location: this.map.getCenter(),
             radius: '500',
@@ -166,8 +166,8 @@ class CustomMap {
         }
     }
 
+    // Récupération des restaurants via un fichier JSON en local
     getLocalRestaurantList() {
-        // En local via JSON
         fetch('js/data.json')
             .then(response => response.json())
             .then(function(results) {
@@ -201,9 +201,8 @@ class CustomMap {
             });
     }
 
-    // Récupération des restaurants alentours
+    // Récupération des restaurants alentours dans la zone de la map
     getRestaurantNearby(position) {
-        // Récupération des informations sur GooglePlaces
         const request = {
             location: position,
             radius: '1000',
@@ -330,6 +329,7 @@ class CustomMap {
         });
     }
 
+    // Place un marker avec un formulaire pour l'ajout d'un restaurant via un click droit sur la map
     markerAtRightClick() {
         google.maps.event.addListener(this.map, 'rightclick', function(event) {
             map.removeMarkers();
