@@ -130,12 +130,12 @@ function removeRestaurantDetails() {
 // Ajout d'un commentaire + actualisation de la moyenne et du restaurant dans la liste
 function addNewReview() {
 
-    const newAuthor = document.getElementById('newAuthor').value;
+    const newAuthor = document.getElementById('newAuthor').value.trim();
     const newRate = parseInt(document.getElementById('newRate').value);
     const newComment = document.getElementById('newComment').value;
     if (newAuthor && newComment) {
         const newReview = new CustomReview(
-            newAuthor.trim(),
+            newAuthor,
             newRate,
             newComment,
             selectedRestaurant.getId()
