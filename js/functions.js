@@ -135,7 +135,7 @@ function addNewReview() {
     const newComment = document.getElementById('newComment').value;
     if (newAuthor && newComment) {
         const newReview = new CustomReview(
-            newAuthor,
+            newAuthor.trim(),
             newRate,
             newComment,
             selectedRestaurant.getId()

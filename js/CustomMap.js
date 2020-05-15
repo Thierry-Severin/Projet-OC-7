@@ -173,7 +173,7 @@ class CustomMap {
             .then(function(results) {
                 results.forEach(function (restaurant) {
                     const reviews = restaurant.ratings.map((rating) => new CustomReview(
-                        undefined,
+                        'Utilisateur anonyme',
                         rating.stars,
                         rating.comment
                     ));
@@ -308,7 +308,6 @@ class CustomMap {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 let googlePlacesReviews = [];
                 // Si un restaurant n'a pas de reviews, alors place.reviews === undefined
-                console.log('place.reviews:', place.reviews)
                 if (place.reviews) {
                     googlePlacesReviews = place.reviews.map(function(review) {
                         return new Review(
