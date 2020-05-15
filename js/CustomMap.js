@@ -250,7 +250,7 @@ class CustomMap {
 
     // Recherche d'un restaurant par son nom et ajout dans restaurantList
     getRestaurantByName() {
-        const restaurantSearched = document.getElementById('searchBar').value;
+        const restaurantSearched = document.getElementById('searchBar').value.trim();
         
         if (restaurantSearched) {
             // Récupération des informations sur GooglePlaces
