@@ -94,6 +94,36 @@ class CustomMap {
         });
     }
 
+    // Création d'un marker special avec un formulaire pour créer un restaurant après un click droit
+    setFormMarker(position, results) {
+        const marker = new google.maps.Marker({
+            position: position,
+            map: this.map
+        });
+        markerList.push(marker);
+
+        formattedAddress = results[0].formatted_address;
+        latLngObj = position;
+
+        document.getElementById('newAddress').innerHTML = formattedAddress;
+
+        const form = $('.addNewRestaurantForm').clone().show();
+        const infowindow_content = form[0];
+        const infowindow = new google.maps.InfoWindow({
+            content: infowindow_content
+        });
+
+        form.click(function(){
+            $('#addRestaurantBtn').click(function() {
+                createNewRestaurant();
+                infowindow.close();
+            });
+        });
+
+        infoWindowList.push(infowindow);
+        infowindow.open(map, marker);
+    }
+
     // Suppression de tout les markers de la map
     removeMarkers() {
         for (let i = 0; i < this.markerList.length; i++) {
@@ -278,6 +308,7 @@ class CustomMap {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 let googlePlacesReviews = [];
                 // Si un restaurant n'a pas de reviews, alors place.reviews === undefined
+                console.log('place.reviews:', place.reviews)
                 if (place.reviews) {
                     googlePlacesReviews = place.reviews.map(function(review) {
                         return new Review(
@@ -298,36 +329,6 @@ class CustomMap {
                 alert('Impossible de récupérer les reviews.', status);
             }
         });
-    }
-
-    // Création d'un marker special avec un formulaire pour créer un restaurant après un click droit
-    setFormMarker(position, results) {
-        const marker = new google.maps.Marker({
-            position: position,
-            map: this.map
-        });
-        markerList.push(marker);
-
-        formattedAddress = results[0].formatted_address;
-        latLngObj = position;
-
-        document.getElementById('newAddress').innerHTML = formattedAddress;
-
-        const form = $('.addNewRestaurantForm').clone().show();
-        const infowindow_content = form[0];
-        const infowindow = new google.maps.InfoWindow({
-            content: infowindow_content
-        });
-
-        form.click(function(){
-            $('#addRestaurantBtn').click(function() {
-                createNewRestaurant();
-                infowindow.close();
-            });
-        });
-
-        infoWindowList.push(infowindow);
-        infowindow.open(map, marker);
     }
 
     markerAtRightClick() {

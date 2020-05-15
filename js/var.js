@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 // Variables Globales
 const GOOGLE_KEY = 'AIzaSyAdRLMuV1SShGeWaJw81FdroiSA4M7DO-0';
 // Latitude et longitude de Paris (centre de la carte)
